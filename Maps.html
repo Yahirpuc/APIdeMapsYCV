@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro para evento DEMO</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap">
+
+    <style>
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-image: url(/imgs/fondo.jpg);
+            background-size: cover;
+            background-position: center;
+            background-color: #131325;
+        }
+
+        header {
+            height: 200px;
+            background-color: #0000007f;
+            align-items: center;
+            font-family: Cambria, sans-serif;
+        }
+
+        .logo {
+            font-size: 80px;
+            color: #ffffff;
+            font-weight: bold;
+            margin-left: 80px;
+            padding-top: 50px;
+            text-align: center;
+        }
+
+        nav {
+            text-align: right;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin-right: 80px;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            font-size: 30px;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a.button {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 10%;
+            background-color: #eac703;
+            color: black;
+        }
+
+        nav ul li a.button:hover {
+            background-color: #ffd700;
+        }
+
+        h1 {
+            font-size: 90px;
+            color: rgb(255, 196, 0);
+            margin: 0;
+        }
+
+        main {
+            display: flex;
+            padding: 20px;
+            height: calc(100% - 200px);
+        }
+
+        .contenedor-entrada {
+            width: 400px;
+            height: 520px;
+            background-color: rgba(255, 253, 253, 0.059);
+            backdrop-filter: blur(10px);
+            padding: 0px;
+            margin-top: 10px;
+            border-radius: 50px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-left: 80px;
+            
+        }
+
+        .contenedor-entrada form {
+            margin-top: 50px;
+            margin-left: 50px;
+            margin-right: 50px;
+            font-size: 20px;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+            
+        }
+
+        .contenedor-entrada label {
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .contenedor-entrada input {
+            padding: 10px;
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.385);
+            border: 1px solid #cccccc;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0);
+            width: 250px;
+        }
+
+        .contenedor-entrada input:focus {
+            outline: none;
+            border-color: #f9f9f9;
+        }
+
+        .contenedor-entrada button {
+            
+        
+            width: 200px;
+            padding: 15px;
+            font-size: 25px;
+            color: #000000;
+          
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-left: 40px;
+            
+          
+          
+        }
+
+        .contenedor-entrada button.enviar-datos {
+            background-color: #ffffff;
+        }
+
+        .contenedor-entrada button.enviar-datos:hover {
+            background-color: #048869;
+            color: white;
+        }
+
+       
+
+        .mapa {
+            margin-left: 100px;
+            margin-right: 100px;
+            width: 50%;
+        }
+
+        .mapa iframe {
+            margin-top: 10px;
+            width: 110%;
+            height: 520px;
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="titulo">
+            <div class="logo">Registro para eventos DEMO</div>
+        </div>
+    </header>
+    <main>
+        <div class="contenedor-entrada">
+            <form id="direccionForm">
+                <label for="direccion">Dirección</label>
+                <input type="text" id="direccionInput" name="direccion" placeholder="Ingresa la dirección del evento" />
+                <label for="fecha">Fecha</label>
+                <input type="date" id="fecha" name="fecha" placeholder="Ingresa la fecha del evento" />
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre" />
+                <label for="apellidos">Apellidos</label>
+                <input type="text" id="apellidos" name="apellidos" placeholder="Ingresa tus apellidos" />
+                <button type="button" id="enviarDireccion" class="enviar-datos">Enviar</button>
+            </form>
+        </div>
+        <div class="mapa">
+            <iframe id="mapaIframe" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </main>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGKCwfM236J2SoyyyLQdhuecvAPO1Fg68&q&libraries=places"></script>
+    <script>
+        function initAutocomplete() {
+            var input = document.getElementById('direccionInput');
+            var autocomplete = new google.maps.places.Autocomplete(input, {
+                types: ['geocode']
+            });
+
+            autocomplete.addListener('place_changed', function () {
+                var place = autocomplete.getPlace();
+                if (!place.geometry) {
+                    console.log("No details available for input: '" + place.name + "'");
+                    return;
+                }
+                console.log("Place details:", place);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            initAutocomplete();
+
+            document.getElementById("enviarDireccion").addEventListener("click", function () {
+                var direccion = document.getElementById("direccionInput").value;
+                var iframe = document.getElementById("mapaIframe");
+                iframe.src = "https://www.google.com/maps/embed/v1/place?key=AIzaSyCGKCwfM236J2SoyyyLQdhuecvAPO1Fg68&q=" + encodeURIComponent(direccion) + "&zoom=15";
+            });
+        });
+    </script>
+</body>
+
+</html>
